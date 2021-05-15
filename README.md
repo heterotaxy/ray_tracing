@@ -55,5 +55,6 @@ eyep x y z
 refp z y z
 back R G B
 vang ha va
+size width //横のピクセル数
 ```
 まず、図形を設定したのちにその図形の特徴（表面や光源）を記述する。

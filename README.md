@@ -7,7 +7,35 @@ ray tracin gweekend を参照にしつつray_tracing プログラムの勉強
 ## 実行方法
 ``./a.out filename.dat > image.ppm``
 で実行。
-macであればApplescriptで実行できいるようにした。
+自分はmacなので下記のような簡単なスクリプトを書いて実行している。
+エラー処理などはしていないので、利用する際は注意が必要。
+`applescript
+(*name*)`の部分は実行するパソコンいよって変更を加える必要がある。
+
+```applescript
+on run
+	set fileName to POSIX path of (choose file of type {"dat"} default location (POSIX file "Users/(*name*)/C++/ray_tracing" as alias))
+	set theResponse to display dialog "Please Enter the output file" default answer "" with icon note buttons {"Cancel", "Continue"} default button "Continue"
+	
+	set tooutput to text returned of theResponse
+	tell application "Terminal"
+		set currentTab to do script "cd ~/C++/ray_tracing"
+		
+		delay 0.3
+		do script "./a.out " & fileName & " > " & tooutput in currentTab
+		repeat
+			delay 1
+			if not (busy of currentTab) then
+				do script "open " & tooutput in currentTab
+				delay 0.3
+				quit application "Terminal"
+				exit repeat
+			end if
+		end repeat
+	end tell
+	
+end run
+```
 
 ## filename.dataの書き方
 ```
